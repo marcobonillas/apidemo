@@ -17,3 +17,4 @@ C:\Users\Marco\source\repos\ApiDemo\ApiDemo\bin\Debug\netcoreapp3.1\ApiDemo.pdb
 C:\Users\Marco\source\repos\ApiDemo\ApiDemo\obj\Debug\netcoreapp3.1\ApiDemo.dll
 C:\Users\Marco\source\repos\ApiDemo\ApiDemo\obj\Debug\netcoreapp3.1\ApiDemo.pdb
 C:\Users\Marco\source\repos\ApiDemo\ApiDemo\obj\Debug\netcoreapp3.1\ApiDemo.genruntimeconfig.cache
+C:\Users\Marco\source\repos\ApiDemo\ApiDemo\obj\Debug\netcoreapp3.1\ApiDemo.csprojAssemblyReference.cache
