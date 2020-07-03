@@ -39,5 +39,3 @@ C:\Users\Marco\source\repos\ApiDemo\ApiDemo\bin\Debug\netcoreapp3.1\Microsoft.Az
 C:\Users\Marco\source\repos\ApiDemo\ApiDemo\bin\Debug\netcoreapp3.1\Microsoft.Azure.DocumentDB.Core.dll
 C:\Users\Marco\source\repos\ApiDemo\ApiDemo\bin\Debug\netcoreapp3.1\runtimes\win7-x64\native\Cosmos.CRTCompat.dll
 C:\Users\Marco\source\repos\ApiDemo\ApiDemo\bin\Debug\netcoreapp3.1\runtimes\win7-x64\native\Microsoft.Azure.Documents.ServiceInterop.dll
-C:\Users\Marco\source\repos\ApiDemo\ApiDemo\obj\Debug\netcoreapp3.1\ApiDemo.csproj.CoreCompileInputs.cache
-C:\Users\Marco\source\repos\ApiDemo\ApiDemo\obj\Debug\netcoreapp3.1\ApiDemo.MvcApplicationPartsAssemblyInfo.cache

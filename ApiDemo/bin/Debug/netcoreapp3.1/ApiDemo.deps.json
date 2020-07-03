@@ -24,7 +24,6 @@
     ".NETCoreApp,Version=v3.1": {
       "ApiDemo/1.0.0": {
         "dependencies": {
-          "AutoMapper": "10.0.0",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "7.0.0",
           "Microsoft.Azure.Cosmos": "3.10.1",
           "Microsoft.Azure.DocumentDB.Core": "2.11.1",
@@ -319,15 +318,15 @@
           "ApiDemo.dll": {}
         }
       },
-      "AutoMapper/10.0.0": {
+      "AutoMapper/9.0.0": {
         "dependencies": {
-          "Microsoft.CSharp": "4.7.0",
-          "System.Reflection.Emit": "4.7.0"
+          "Microsoft.CSharp": "4.5.0",
+          "System.Reflection.Emit": "4.3.0"
         },
         "runtime": {
           "lib/netstandard2.0/AutoMapper.dll": {
-            "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.0.0"
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.0.0"
           }
         },
         "compile": {
@@ -336,7 +335,7 @@
       },
       "AutoMapper.Extensions.Microsoft.DependencyInjection/7.0.0": {
         "dependencies": {
-          "AutoMapper": "10.0.0",
+          "AutoMapper": "9.0.0",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "2.0.0"
         },
         "runtime": {
@@ -435,7 +434,7 @@
           "lib/netstandard1.6/Microsoft.Azure.DocumentDB.Core.dll": {}
         }
       },
-      "Microsoft.CSharp/4.7.0": {},
+      "Microsoft.CSharp/4.5.0": {},
       "Microsoft.Extensions.DependencyInjection.Abstractions/2.0.0": {},
       "Microsoft.NETCore.Platforms/2.1.0": {},
       "Microsoft.NETCore.Targets/1.1.0": {},
@@ -497,7 +496,7 @@
       },
       "Newtonsoft.Json/10.0.2": {
         "dependencies": {
-          "Microsoft.CSharp": "4.7.0",
+          "Microsoft.CSharp": "4.5.0",
           "NETStandard.Library": "1.6.1",
           "System.ComponentModel.TypeConverter": "4.3.0",
           "System.Runtime.Serialization.Formatters": "4.3.0",
@@ -743,7 +742,7 @@
           "System.Linq.Expressions": "4.3.0",
           "System.ObjectModel": "4.3.0",
           "System.Reflection": "4.3.0",
-          "System.Reflection.Emit": "4.7.0",
+          "System.Reflection.Emit": "4.3.0",
           "System.Reflection.Emit.ILGeneration": "4.3.0",
           "System.Reflection.Primitives": "4.3.0",
           "System.Reflection.TypeExtensions": "4.3.0",
@@ -854,7 +853,7 @@
           "System.Linq": "4.3.0",
           "System.ObjectModel": "4.3.0",
           "System.Reflection": "4.3.0",
-          "System.Reflection.Emit": "4.7.0",
+          "System.Reflection.Emit": "4.3.0",
           "System.Reflection.Emit.ILGeneration": "4.3.0",
           "System.Reflection.Emit.Lightweight": "4.3.0",
           "System.Reflection.Extensions": "4.3.0",
@@ -1070,7 +1069,15 @@
         }
       },
       "System.Reflection.DispatchProxy/4.5.0": {},
-      "System.Reflection.Emit/4.7.0": {},
+      "System.Reflection.Emit/4.3.0": {
+        "dependencies": {
+          "System.IO": "4.3.0",
+          "System.Reflection": "4.3.0",
+          "System.Reflection.Emit.ILGeneration": "4.3.0",
+          "System.Reflection.Primitives": "4.3.0",
+          "System.Runtime": "4.3.0"
+        }
+      },
       "System.Reflection.Emit.ILGeneration/4.3.0": {
         "dependencies": {
           "System.Reflection": "4.3.0",
@@ -3193,12 +3200,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "AutoMapper/10.0.0": {
+    "AutoMapper/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-T09NoqMZBqw0/JEauXulxnmmerl0Zj03e0r6VCcJ0LURWBIaYxZPPoiDv8bHf5Y4x2xcXJp4JPXoCaeOMJfHEA==",
-      "path": "automapper/10.0.0",
-      "hashPath": "automapper.10.0.0.nupkg.sha512"
+      "sha512": "sha512-xCqvoxT4HIrNY/xlXG9W+BA/awdrhWvMTKTK/igkGSRbhOhpl3Q8O8Gxlhzjc9JsYqE7sS6AxgyuUUvZ6R5/Bw==",
+      "path": "automapper/9.0.0",
+      "hashPath": "automapper.9.0.0.nupkg.sha512"
     },
     "AutoMapper.Extensions.Microsoft.DependencyInjection/7.0.0": {
       "type": "package",
@@ -3221,12 +3228,12 @@
       "path": "microsoft.azure.documentdb.core/2.11.1",
       "hashPath": "microsoft.azure.documentdb.core.2.11.1.nupkg.sha512"
     },
-    "Microsoft.CSharp/4.7.0": {
+    "Microsoft.CSharp/4.5.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-pTj+D3uJWyN3My70i2Hqo+OXixq3Os2D1nJ2x92FFo6sk8fYS1m1WLNTs0Dc1uPaViH0YvEEwvzddQ7y4rhXmA==",
-      "path": "microsoft.csharp/4.7.0",
-      "hashPath": "microsoft.csharp.4.7.0.nupkg.sha512"
+      "sha512": "sha512-kaj6Wb4qoMuH3HySFJhxwQfe8R/sJsNJnANrvv8WdFPMoNbKY5htfNscv+LHCu5ipz+49m2e+WQXpLXr9XYemQ==",
+      "path": "microsoft.csharp/4.5.0",
+      "hashPath": "microsoft.csharp.4.5.0.nupkg.sha512"
     },
     "Microsoft.Extensions.DependencyInjection.Abstractions/2.0.0": {
       "type": "package",
@@ -3697,12 +3704,12 @@
       "path": "system.reflection.dispatchproxy/4.5.0",
       "hashPath": "system.reflection.dispatchproxy.4.5.0.nupkg.sha512"
     },
-    "System.Reflection.Emit/4.7.0": {
+    "System.Reflection.Emit/4.3.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-VR4kk8XLKebQ4MZuKuIni/7oh+QGFmZW3qORd1GvBq/8026OpW501SzT/oypwiQl4TvT8ErnReh/NzY9u+C6wQ==",
-      "path": "system.reflection.emit/4.7.0",
-      "hashPath": "system.reflection.emit.4.7.0.nupkg.sha512"
+      "sha512": "sha512-228FG0jLcIwTVJyz8CLFKueVqQK36ANazUManGaJHkO0icjiIypKW7YLWLIWahyIkdh5M7mV2dJepllLyA1SKg==",
+      "path": "system.reflection.emit/4.3.0",
+      "hashPath": "system.reflection.emit.4.3.0.nupkg.sha512"
     },
     "System.Reflection.Emit.ILGeneration/4.3.0": {
       "type": "package",
