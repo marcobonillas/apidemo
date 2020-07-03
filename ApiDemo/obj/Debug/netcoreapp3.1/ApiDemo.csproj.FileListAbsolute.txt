@@ -35,8 +35,6 @@ C:\Users\Marco\source\repos\ApiDemo\ApiDemo\bin\Debug\netcoreapp3.1\runtimes\win
 C:\Users\Marco\source\repos\ApiDemo\ApiDemo\obj\Debug\netcoreapp3.1\ApiDemo.csproj.CopyComplete
 C:\Users\Marco\source\repos\ApiDemo\ApiDemo\bin\Debug\netcoreapp3.1\AutoMapper.dll
 C:\Users\Marco\source\repos\ApiDemo\ApiDemo\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
-C:\Users\Marco\source\repos\ApiDemo\ApiDemo\bin\Debug\netcoreapp3.1\MediatR.dll
-C:\Users\Marco\source\repos\ApiDemo\ApiDemo\bin\Debug\netcoreapp3.1\MediatR.Extensions.Microsoft.DependencyInjection.dll
 C:\Users\Marco\source\repos\ApiDemo\ApiDemo\bin\Debug\netcoreapp3.1\Microsoft.Azure.Documents.ServiceInterop.dll
 C:\Users\Marco\source\repos\ApiDemo\ApiDemo\bin\Debug\netcoreapp3.1\Microsoft.Azure.DocumentDB.Core.dll
 C:\Users\Marco\source\repos\ApiDemo\ApiDemo\bin\Debug\netcoreapp3.1\runtimes\win7-x64\native\Cosmos.CRTCompat.dll

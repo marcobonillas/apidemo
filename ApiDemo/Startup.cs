@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using ApiDemo.Services;
 using AutoMapper;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,8 +22,6 @@ namespace ApiDemo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(Startup));
-
-            services.AddMediatR(typeof(Startup));
 
             services.AddSingleton<IUserRepository>(InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
             
