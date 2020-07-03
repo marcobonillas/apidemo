@@ -1,87 +1,39 @@
 using System;
-using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Reflection;
 using System.Text;
 using System.Threading;
-using ApiDemo;
 using ApiDemo.Contracts;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace ApiDemoTests
 {
-    public class UserTest
+    public class UserApiTests
     {
         private static IHost _server;
 
         [SetUp]
         public void Setup()
         {
-            var projectDirectory = GetDirectoryForProject("", typeof(Startup).GetTypeInfo().Assembly);
-            var hostBuilder = new HostBuilder()
-                .ConfigureWebHost(webHost =>
-                {
-                    webHost.UseTestServer()
-                        .UseEnvironment("Development")
-                        .UseContentRoot(projectDirectory)
-                        .UseConfiguration(new ConfigurationBuilder()
-                            .SetBasePath(projectDirectory)
-                            .AddJsonFile("appsettings.json")
-                            .Build());
-
-                    webHost.UseStartup<Startup>();
-                });
-
+            var hostBuilder = TestSelfHostHelper.GetTestSelfWebHost();
             _server = hostBuilder.Start();
         }
 
-
-        private static string GetDirectoryForProject(string projectRelativePath, Assembly startupAssembly)
-        {
-
-            var projectName = startupAssembly.GetName().Name;
-
-
-            var applicationBasePath = System.AppContext.BaseDirectory;
-
-            var directoryInfo = new DirectoryInfo(applicationBasePath);
-            do
-            {
-                directoryInfo = directoryInfo.Parent;
-
-                var projectDirectoryInfo = new DirectoryInfo(Path.Combine(directoryInfo.FullName, projectRelativePath));
-                if (projectDirectoryInfo.Exists)
-                {
-                    var projectFileInfo = new FileInfo(Path.Combine(projectDirectoryInfo.FullName, projectName, $"{projectName}.csproj"));
-                    if (projectFileInfo.Exists)
-                    {
-                        return Path.Combine(projectDirectoryInfo.FullName, projectName);
-                    }
-                }
-            }
-            while (directoryInfo.Parent != null);
-
-            throw new Exception($"Project root could not be located using the application root {applicationBasePath}.");
-        }
-
+        #region Create Tests
         [Test]
-        public void ShouldbeAbleToCreateUserWithValidData()
+        public void CREATEShouldbeAbleToCreateUserWithValidData()
         {
-            var result = CreateRandomUser();
-
+            var result = CommonUtils.CreateRandomUser(_server);
+            
             Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Created));
             Assert.That(result.Headers.Location, Is.Not.Null);
         }
-
-
+        
         [Test]
-        public void ShouldFailToCreateWithIncompleteParameters()
+        public void CREATEShouldFailToCreateWithIncompleteParameters()
         {
             var client = _server.GetTestClient();
             var requestUrl = "/user";
@@ -103,7 +55,7 @@ namespace ApiDemoTests
         }
 
         [Test]
-        public void ShouldFailToCreateWithMissingFirstName()
+        public void CREATEShouldFailToCreateWithMissingFirstName()
         {
             var client = _server.GetTestClient();
             var requestUrl = "/user";
@@ -125,7 +77,7 @@ namespace ApiDemoTests
         }
 
         [Test]
-        public void ShouldFailToCreateWithMissingLastName()
+        public void CREATEShouldFailToCreateWithMissingLastName()
         {
             var client = _server.GetTestClient();
             var requestUrl = "/user";
@@ -147,7 +99,7 @@ namespace ApiDemoTests
         }
 
         [Test]
-        public void ShouldFailToCreateWithInvalidPhone()
+        public void CREATEShouldFailToCreateWithInvalidPhone()
         {
             var client = _server.GetTestClient();
             var requestUrl = "/user";
@@ -170,12 +122,45 @@ namespace ApiDemoTests
         }
 
         [Test]
-        public void ShoulGetUserWhenEmailExists()
+        public void CREATEShouldFailToCreateWhenIsDuplicateEmail()
+        {
+            var client = _server.GetTestClient();
+            var requestUrl = "/user";
+
+            var randomString = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 8);
+            var emailToSearch = $"found_{randomString}@apidemo.com";
+
+            CommonUtils.CreateRandomUser(_server, emailToSearch);
+
+            var newUser = new UserRequest
+            {
+                FirstName = "The",
+                LastName = "Dude",
+                PhoneNumber = "555-123-3333",
+                EmailAddress = emailToSearch
+            };
+            
+            var jsonStringUser = JsonConvert.SerializeObject(newUser);
+
+            var data = new StringContent(jsonStringUser, Encoding.UTF8, "application/json");
+
+            var response = client.PostAsync(requestUrl, data);
+            var result = response.Result;
+
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
+        }
+
+        #endregion
+
+        #region GET Tests
+
+        [Test]
+        public void GETShoulGetUserWhenEmailExists()
         {
             var randomString = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 8);
             var emailToSearch = $"found_{randomString}@apidemo.com";
 
-            CreateRandomUser(emailToSearch);
+            CommonUtils.CreateRandomUser(_server,emailToSearch);
 
             Thread.Sleep(1000);
 
@@ -188,11 +173,37 @@ namespace ApiDemoTests
             var content = result.Content.ReadAsStringAsync();
 
             Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-
         }
 
         [Test]
-        public void ShoulGetNotFoundWhenEmailDoesNotExist()
+        public void GETShoulGetUserWhenEmailExistsWithProperName()
+        {
+            var randomString = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 8);
+            var emailToSearch = $"found_{randomString}@apidemo.com";
+
+            var email = $"theDude_{randomString}@apidemo.com";
+
+            var newUser = new UserRequest
+            {
+                FirstName = $"The_{randomString}",
+                LastName = $"Dude_{randomString}",
+                MiddleName = $"mn_{randomString}",
+                PhoneNumber = $"555-123-4567",
+                EmailAddress = email
+            };
+
+            CommonUtils.CreateTestUser(_server,newUser);
+
+            Thread.Sleep(1000);
+
+            var client = _server.GetTestClient();
+            var userFromApi = CommonUtils.GetUserByEmailAddress(email,client);
+            var expectedName = $"{newUser.FirstName} {newUser.MiddleName} {newUser.LastName}";
+            Assert.That(userFromApi.Name, Is.EqualTo(expectedName));
+        }
+
+        [Test]
+        public void GETShoulGetNotFoundWhenEmailDoesNotExist()
         {
             var client = _server.GetTestClient();
             var requestUrl = "/user?emailAddress=testuserFake@apidemo.com";
@@ -205,45 +216,84 @@ namespace ApiDemoTests
         }
 
         [Test]
-        public void ShoulGetBadArgumentsWhenNotSearchingByEmail()
+        public void GETShoulGetBadArgumentsWhenNotSearchingByEmail()
         {
             var client = _server.GetTestClient();
             var requestUrl = "/user?firstName=testuserFake@apidemo.com";
 
             var response = client.GetAsync(requestUrl);
             var result = response.Result;
-            var content = result.Content.ReadAsStringAsync();
 
             Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         }
 
-        private HttpResponseMessage CreateRandomUser(string email=null)
+        #endregion
+
+        #region PUT
+
+        [Test]
+        public void PUTShoulUpdateUserWhenAccountExists()
         {
-            var client = _server.GetTestClient();
-            var requestUrl = "/user";
-
             var randomString = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 8);
+            var emailForUpdate = $"found_{randomString}@apidemo.com";
 
-            email ??= $"theDude_{randomString}@apidemo.com";
+            CommonUtils.CreateRandomUser(_server, emailForUpdate);
 
-            var newUser = new UserRequest
+            Thread.Sleep(1000);
+
+            var client = _server.GetTestClient();
+
+            var requestUrl = $"/user/{emailForUpdate}";
+            var updateUserRequest = new UserUpdateRequest()
             {
-                FirstName = $"The_{randomString}",
-                LastName = $"Dude_{randomString}",
-                MiddleName = $"mn_{randomString}",
-                PhoneNumber = $"555-123-4567",
-                EmailAddress = email
+                FirstName = "The",
+                LastName = "DudeUpdated",
+                MiddleName = "Up_Down",
+                PhoneNumber = "555-123-9999",
             };
 
-            var jsonStringUser = JsonConvert.SerializeObject(newUser);
-
-            Console.WriteLine(jsonStringUser);
+            var jsonStringUser = JsonConvert.SerializeObject(updateUserRequest);
 
             var data = new StringContent(jsonStringUser, Encoding.UTF8, "application/json");
 
-            var response = client.PostAsync(requestUrl, data);
+            var response = client.PutAsync(requestUrl, data);
             var result = response.Result;
-            return result;
+
+            var userReponse = CommonUtils.GetUserByEmailAddress(emailForUpdate, client);
+
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
+            Assert.That(userReponse.Name.Contains(updateUserRequest.MiddleName));
+            Assert.That(userReponse.PhoneNumber, Is.EqualTo(updateUserRequest.PhoneNumber));
         }
+
+        [Test]
+        public void PUTShoulNotUpdateUserWhenAccountDoesNotExists()
+        {
+
+            var client = _server.GetTestClient();
+
+            var requestUrl = $"/user/fakeEmailHere@apidemo.com";
+            var updateUserRequest = new UserUpdateRequest()
+            {
+                FirstName = "The",
+                LastName = "DudeUpdated",
+                MiddleName = "Up_Down",
+                PhoneNumber = "555-123-9999",
+            };
+
+            var jsonStringUser = JsonConvert.SerializeObject(updateUserRequest);
+
+            var data = new StringContent(jsonStringUser, Encoding.UTF8, "application/json");
+
+            var response = client.PutAsync(requestUrl, data);
+            var result = response.Result;
+
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+
+        }
+        
+
+        #endregion
+
     }
 }

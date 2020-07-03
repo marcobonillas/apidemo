@@ -42,6 +42,12 @@ namespace ApiDemo
             UserRepository cosmosDbService = new UserRepository(client, databaseName, containerName);
             Microsoft.Azure.Cosmos.DatabaseResponse database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/emailAddress");
+            await client.GetDatabase(databaseName).DefineContainer(name: containerName, partitionKeyPath: "/emailAddress")
+                .WithUniqueKey()
+                    .Path("/emailAddress")
+                .Attach()
+                .CreateIfNotExistsAsync();
+
 
             return cosmosDbService;
         }

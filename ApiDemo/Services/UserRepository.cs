@@ -35,14 +35,16 @@ namespace ApiDemo.Services
             }
         }
 
-        public async Task CreateUser(ApiDemo.Domain.User user)
+        public async Task<ApiDemo.Domain.User> CreateUser(ApiDemo.Domain.User user)
         {
             ItemResponse<ApiDemo.Domain.User> res = await this._container.CreateItemAsync<ApiDemo.Domain.User>(user, new PartitionKey(user.EmailAddress));
+            return res.Resource;
         }
 
-        public async Task UpdateUser(string id, ApiDemo.Domain.User user)
+        public async Task<ApiDemo.Domain.User> UpdateUser(string emailAddress, ApiDemo.Domain.User user)
         {
-            await _container.UpsertItemAsync<ApiDemo.Domain.User>(user, new PartitionKey(user.EmailAddress));
+            ItemResponse<ApiDemo.Domain.User> res = await _container.UpsertItemAsync<ApiDemo.Domain.User>(user, new PartitionKey(emailAddress));
+            return res.Resource;
         }
     }
 }

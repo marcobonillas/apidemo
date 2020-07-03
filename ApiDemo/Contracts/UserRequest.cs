@@ -22,4 +22,20 @@ namespace ApiDemo.Contracts
         public string EmailAddress { get; set; }
     }
 
+    [DataContract]
+    public class UserUpdateRequest
+    {
+        [DataMember]
+        public string FirstName { get; set; }
+        [DataMember]
+        public string MiddleName { get; set; }
+        [DataMember]
+        public string LastName { get; set; }
+        [DataMember]
+        [Phone]
+        public string PhoneNumber { get; set; }
+
+
+    }
+
 }

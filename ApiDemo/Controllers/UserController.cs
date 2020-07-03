@@ -61,20 +61,57 @@ namespace ApiDemo.Controllers
             User user = new User();
             user = _mapper.Map<User>(userCreateRequest);
             user.Id = Guid.NewGuid().ToString();
-            var userResponse = _mapper.Map<UserResponse>(user);
+            var userResponse = new UserResponse();
+
+            var isUserExists = _userRepository.GetUserByEmailAddressAsync(userCreateRequest.EmailAddress).Result;
+            if (isUserExists != null)
+            {
+                return Conflict($"Email: {userCreateRequest.EmailAddress} already in use");
+            }
 
             try
             {
-                var task = _userRepository.CreateUser(user);
-                Console.WriteLine(task.Status);
-
+                var userCreated = _userRepository.CreateUser(user).Result;
+                userResponse = _mapper.Map<UserResponse>(userCreated);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.ToString());
+                return Problem($"There was a problem processing your request:{ex}");
             }
 
             return CreatedAtAction(nameof(Get), new { id = user.Id }, userResponse);
+        }
+
+        [HttpPut("{emailAddress}")]
+        public ActionResult Put(string emailAddress, UserUpdateRequest userUpdateRequest)
+        {
+            User existingUser = new User();
+
+            existingUser = _userRepository.GetUserByEmailAddressAsync(emailAddress).Result;
+
+            if (existingUser == null)
+            {
+                return NotFound($"Cannot update [{emailAddress}], does not exist");
+            }
+
+            try
+            {
+                var user = _mapper.Map<User>(userUpdateRequest);
+                user.Id = existingUser.Id;
+                user.EmailAddress = existingUser.EmailAddress;
+
+                var userUpdated = _userRepository.UpdateUser(emailAddress, user).Result;
+                var userResponse = _mapper.Map<UserResponse>(userUpdated);
+                _logger.LogInformation($"updated user: {userResponse}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return Problem($"There was a problem processing your request:{ex}");
+            }
+
+            return NoContent();
         }
     }
 }
