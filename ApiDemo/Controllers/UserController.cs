@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.WebSockets;
-using System.Threading.Tasks;
 using ApiDemo.Contracts;
 using ApiDemo.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using User = ApiDemo.Domain.User;
 using UserResponse = ApiDemo.Contracts.UserResponse;
 

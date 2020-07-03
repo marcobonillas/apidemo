@@ -177,9 +177,10 @@ namespace ApiDemoTests
 
             CreateRandomUser(emailToSearch);
 
-            Thread.Sleep(3000);
+            Thread.Sleep(1000);
 
             var client = _server.GetTestClient();
+
             var requestUrl = $"/user?emailAddress={emailToSearch}";
 
             var response = client.GetAsync(requestUrl);

@@ -22,8 +22,12 @@ namespace ApiDemo.Services
         {
             try
             {
-                ItemResponse<ApiDemo.Domain.User> response = await this._container.ReadItemAsync<ApiDemo.Domain.User>(emailAddress, new PartitionKey(emailAddress));
-                return response.Resource;
+                ApiDemo.Domain.User user = _container.GetItemLinqQueryable<ApiDemo.Domain.User>(true)
+                    .Where(b => b.EmailAddress == emailAddress)
+                    .AsEnumerable()
+                    .FirstOrDefault();
+
+                return user;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
             {

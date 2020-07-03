@@ -29,9 +29,6 @@ namespace ApiDemo
             services.AddSingleton<IUserRepository>(InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
             
             services.AddControllers();
-
-
-            
         }
 
         private static async Task<UserRepository> InitializeCosmosClientInstanceAsync(IConfigurationSection configurationSection)
